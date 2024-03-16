@@ -35,7 +35,7 @@ namespace ServiceImpl
             catch
             {
 
-//                return HttpStatusCode.;
+                return HttpStatusCode.BadGateway;
             }
         }
     }
