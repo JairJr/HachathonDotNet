@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net;
 
 namespace Service
 {
     public interface IProcessarVideoService
     {
-        public Task<string> ProcessarVideo(string videoId);
+        public Task<HttpStatusCode> ProcessarVideo(List<Tuple<string, FileStream>> videos);
     }
 }
