@@ -1,5 +1,4 @@
 using MassTransit;
-using Microsoft.AspNetCore.Http;
 using Service;
 using ServiceImpl;
 using System.Net;
@@ -17,7 +16,7 @@ builder.Services.AddMassTransit(configuracoes =>
 {
     configuracoes.UsingAzureServiceBus((contexto, configuracoesServiceBus) =>
     {
-        configuracoesServiceBus.Host(builder.Configuration.GetConnectionString("ServiceBusConnectionString"));
+        configuracoesServiceBus.Host(builder.Configuration.GetSection("MassTransitAzure")["Conexao"]);
     });
 });
 
