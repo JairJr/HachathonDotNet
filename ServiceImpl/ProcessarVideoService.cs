@@ -17,26 +17,17 @@ namespace ServiceImpl
 
         public async Task<HttpStatusCode> ProcessarVideo(List<Tuple<string, FileStream>> videos)
         {
-            try
-            {
-                foreach (var video in videos)
-                {
-
-                    var enviarVideoRequest = new EnviarVideoRequest(video.Item1, video.Item2);
-
-                    //Criar Logica para quando der erro na tentativa de salvar mensagem na fila
-
-                    await _repository.EnviarVideoAsync(enviarVideoRequest);
-                }
-
-                return HttpStatusCode.OK;
-
-            }
-            catch
+            foreach (var video in videos)
             {
 
-//                return HttpStatusCode.;
+                var enviarVideoRequest = new EnviarVideoRequest(video.Item1, video.Item2);
+
+                //Criar Logica para quando der erro na tentativa de salvar mensagem na fila
+
+                await _repository.EnviarVideoAsync(enviarVideoRequest);
             }
+
+            return HttpStatusCode.OK;
         }
     }
 }
