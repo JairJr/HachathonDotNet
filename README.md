@@ -9,6 +9,7 @@
 
 ## Resumo
 Aplicação que recebe vídeos por meio de um frontend e a partir disso processa os vídeos e disponibiliza as imagens em um arquivo .zip.
+[Miro](https://miro.com/app/board/uXjVNgeIEqc=/)
 
 ## Tecnologias
 As tecnologias utilizadas durante o desenvolvimento do projeto.
