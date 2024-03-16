@@ -38,9 +38,9 @@ app.MapPost("/filme/enviar", async (List<FormFile> videos) =>
 
     List<Tuple<string, FileStream>> videosStream = await ConvertToFileStream(videos);
 
-    var result = await service.ProcessarVideo(videosStream);
+    await service.ProcessarVideo(videosStream);
 
-    return result == HttpStatusCode.OK ? Results.Ok() : Results.BadRequest();
+    return Results.Ok();
 
 }).Accepts<FormFile>("multipart/form-data");
 
