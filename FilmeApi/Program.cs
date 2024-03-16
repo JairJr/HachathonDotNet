@@ -1,5 +1,4 @@
 using MassTransit;
-using Microsoft.AspNetCore.Http;
 using Service;
 using ServiceImpl;
 using System.Net;
@@ -17,7 +16,7 @@ builder.Services.AddMassTransit(configuracoes =>
 {
     configuracoes.UsingAzureServiceBus((contexto, configuracoesServiceBus) =>
     {
-        configuracoesServiceBus.Host(builder.Configuration.GetConnectionString("ServiceBusConnectionString"));
+        configuracoesServiceBus.Host("Endpoint=sb://sb-hackathonfiap.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=ebp1GU+MvKL5LC5F63VZgv4qLituxrqkq+ASbKyaSao=");
     });
 });
 
