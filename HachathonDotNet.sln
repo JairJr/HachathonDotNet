@@ -3,9 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34601.278
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilmeApi", "FilmeApi\FilmeApi.csproj", "{499112FB-B7E7-4492-BE4A-C3840C7D58B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FilmeApi", "FilmeApi\FilmeApi.csproj", "{499112FB-B7E7-4492-BE4A-C3840C7D58B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkerFilme", "WorkerFilme\WorkerFilme.csproj", "{701E2206-A2EE-429D-A0F8-8357EB32CE67}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkerFilme", "WorkerFilme\WorkerFilme.csproj", "{701E2206-A2EE-429D-A0F8-8357EB32CE67}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "Service\Service.csproj", "{484B7303-3F14-4B28-BC0F-43D05213FF64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceImpl", "ServiceImpl\ServiceImpl.csproj", "{117D7A9B-FDF3-4441-80D2-7F89BF684B17}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{89DB7933-5CD4-48A1-B2A7-A8AA7180F991}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepositoryImpl", "RepositoryImpl\RepositoryImpl.csproj", "{C6C28002-FC45-498B-B021-494CD1CDD043}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +29,22 @@ Global
 		{701E2206-A2EE-429D-A0F8-8357EB32CE67}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{701E2206-A2EE-429D-A0F8-8357EB32CE67}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{701E2206-A2EE-429D-A0F8-8357EB32CE67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{484B7303-3F14-4B28-BC0F-43D05213FF64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{484B7303-3F14-4B28-BC0F-43D05213FF64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{484B7303-3F14-4B28-BC0F-43D05213FF64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{484B7303-3F14-4B28-BC0F-43D05213FF64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{117D7A9B-FDF3-4441-80D2-7F89BF684B17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{117D7A9B-FDF3-4441-80D2-7F89BF684B17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{117D7A9B-FDF3-4441-80D2-7F89BF684B17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{117D7A9B-FDF3-4441-80D2-7F89BF684B17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89DB7933-5CD4-48A1-B2A7-A8AA7180F991}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89DB7933-5CD4-48A1-B2A7-A8AA7180F991}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89DB7933-5CD4-48A1-B2A7-A8AA7180F991}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89DB7933-5CD4-48A1-B2A7-A8AA7180F991}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6C28002-FC45-498B-B021-494CD1CDD043}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6C28002-FC45-498B-B021-494CD1CDD043}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6C28002-FC45-498B-B021-494CD1CDD043}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6C28002-FC45-498B-B021-494CD1CDD043}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
