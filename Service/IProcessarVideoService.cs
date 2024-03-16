@@ -8,5 +8,6 @@ namespace Service
 {
     public interface IProcessarVideoService
     {
+        public Task<string> ProcessarVideo(string videoId);
     }
 }
