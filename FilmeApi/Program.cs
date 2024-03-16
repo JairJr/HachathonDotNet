@@ -1,3 +1,4 @@
+using MassTransit;
 using Microsoft.AspNetCore.Http;
 using Service;
 using ServiceImpl;
@@ -11,6 +12,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<IProcessarVideoService, ProcessarVideoService>();
+
+builder.Services.AddMassTransit(configuracoes =>
+{
+    configuracoes.UsingAzureServiceBus((contexto, configuracoesServiceBus) =>
+    {
+        configuracoesServiceBus.Host(builder.Configuration.GetConnectionString("ServiceBusConnectionString"));
+    });
+});
 
 var app = builder.Build();
 
