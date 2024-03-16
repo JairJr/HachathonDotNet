@@ -1,6 +1,8 @@
-using Microsoft.AspNetCore.Mvc;
+using MassTransit;
+using Microsoft.AspNetCore.Http;
 using Service;
 using ServiceImpl;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<IProcessarVideoService, ProcessarVideoService>();
+
+builder.Services.AddMassTransit(configuracoes =>
+{
+    configuracoes.UsingAzureServiceBus((contexto, configuracoesServiceBus) =>
+    {
+        configuracoesServiceBus.Host(builder.Configuration.GetConnectionString("ServiceBusConnectionString"));
+    });
+});
 
 var app = builder.Build();
 
@@ -22,14 +32,35 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapPost("/filme/enviar", async ([FromBody] string name) =>
+app.MapPost("/filme/enviar", async (List<FormFile> videos) =>
 {
-    
+
     var service = app.Services.GetService<IProcessarVideoService>();
 
-    var result = await service.ProcessarVideo(name);
+    List<Tuple<string, FileStream>> videosStream = await ConvertToFileStream(videos);
 
-    return Results.Ok(result);
-});
+    var result = await service.ProcessarVideo(videosStream);
+
+    return result == HttpStatusCode.OK ? Results.Ok() : Results.BadRequest();
+
+}).Accepts<FormFile>("multipart/form-data");
 
 app.Run();
+
+static async Task<List<Tuple<string, FileStream>>> ConvertToFileStream(List<FormFile> videos)
+{
+    var videosStream = new List<Tuple<string, FileStream>>();
+
+    foreach (var video in videos)
+    {
+        using var fileStream = new FileStream(Path.GetTempFileName(), FileMode.Create);
+        
+        await video.CopyToAsync(fileStream);
+        
+        fileStream.Seek(0, SeekOrigin.Begin);
+
+        videosStream.Add(new Tuple<string, FileStream>(video.FileName, fileStream));
+    }
+
+    return videosStream;
+}
