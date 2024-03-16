@@ -1,4 +1,8 @@
 using MassTransit;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Mvc;
+using Repository;
+using RepositoryImpl;
 using Service;
 using ServiceImpl;
 using System.Net;
@@ -11,6 +15,18 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<IProcessarVideoService, ProcessarVideoService>();
+builder.Services.AddTransient<ISendToServiceBusRepository, SendToServiceBusRepository>();
+
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.ValueLengthLimit = int.MaxValue;
+    options.MultipartBodyLengthLimit = long.MaxValue;
+    options.MultipartBoundaryLengthLimit = int.MaxValue;
+    options.ValueCountLimit = int.MaxValue;
+    options.BufferBodyLengthLimit = long.MaxValue;
+    options.MultipartHeadersCountLimit = int.MaxValue;
+    options.MultipartHeadersLengthLimit = int.MaxValue;
+});
 
 builder.Services.AddMassTransit(configuracoes =>
 {
@@ -31,7 +47,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapPost("/filme/enviar", async (List<FormFile> videos) =>
+app.MapPost("/filme/enviar", async ([FromForm] IFormFile[] videos) =>
 {
 
     var service = app.Services.GetService<IProcessarVideoService>();
@@ -42,20 +58,20 @@ app.MapPost("/filme/enviar", async (List<FormFile> videos) =>
 
     return Results.Ok();
 
-}).Accepts<FormFile>("multipart/form-data");
+}).Accepts<IFormFile>("multipart/form-data").DisableAntiforgery();
 
 app.Run();
 
-static async Task<List<Tuple<string, FileStream>>> ConvertToFileStream(List<FormFile> videos)
+static async Task<List<Tuple<string, FileStream>>> ConvertToFileStream(IFormFile[] videos)
 {
     var videosStream = new List<Tuple<string, FileStream>>();
 
     foreach (var video in videos)
     {
         using var fileStream = new FileStream(Path.GetTempFileName(), FileMode.Create);
-        
+
         await video.CopyToAsync(fileStream);
-        
+
         fileStream.Seek(0, SeekOrigin.Begin);
 
         videosStream.Add(new Tuple<string, FileStream>(video.FileName, fileStream));
