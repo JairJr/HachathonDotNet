@@ -16,7 +16,7 @@ builder.Services.AddMassTransit(configuracoes =>
 {
     configuracoes.UsingAzureServiceBus((contexto, configuracoesServiceBus) =>
     {
-        configuracoesServiceBus.Host(builder.Configuration.GetSection("MassTransitAzure")["Conexao"]);
+        configuracoesServiceBus.Host("Endpoint=sb://sb-hackathonfiap.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=ebp1GU+MvKL5LC5F63VZgv4qLituxrqkq+ASbKyaSao=");
     });
 });
 
