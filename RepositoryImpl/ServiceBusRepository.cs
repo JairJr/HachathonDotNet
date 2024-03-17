@@ -5,19 +5,19 @@ using Repository;
 
 namespace RepositoryImpl
 {
-    public class SendToServiceBusRepository : ISendToServiceBusRepository
+    public class ServiceBusRepository : IServiceBusRepository
     {
 
         private readonly IBus _bus;
         private readonly IConfiguration _configuration;
 
-        public SendToServiceBusRepository(IBus bus, IConfiguration configuration)
+        public ServiceBusRepository(IBus bus, IConfiguration configuration)
         {
             _bus = bus;
             _configuration = configuration;
         }
 
-        public async Task EnviarVideoAsync(EnviarVideoRequest request)
+        public async Task SendVideoInfoToQueueAsync(EnviarVideoRequest request)
         {
             var nomeFila = _configuration["MassTransitAzure:NomeFila"] ?? string.Empty;
 

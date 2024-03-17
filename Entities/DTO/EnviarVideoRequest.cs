@@ -12,19 +12,15 @@ namespace Entities.DTO
 
         public string NomeVideo { get; set; }
 
-        public FileStream Stream { get; set; }
-
-        public EnviarVideoRequest(Guid guid, string nomeVideo, FileStream stream)
+        public EnviarVideoRequest(Guid guid, string nomeVideo)
         {
             Guid = guid;
             NomeVideo = nomeVideo;
-            Stream = stream;
         }
 
-        public EnviarVideoRequest(string nomeVideo, FileStream stream)
+        public EnviarVideoRequest(string nomeVideo)
         {
             NomeVideo = nomeVideo;
-            Stream = stream;
             Guid = Guid.NewGuid();
         }
     }

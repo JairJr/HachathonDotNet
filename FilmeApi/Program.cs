@@ -1,40 +1,27 @@
 using MassTransit;
-using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.Mvc;
 using Repository;
 using RepositoryImpl;
 using Service;
 using ServiceImpl;
-using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<IProcessarVideoService, ProcessarVideoService>();
-builder.Services.AddTransient<ISendToServiceBusRepository, SendToServiceBusRepository>();
-
-builder.Services.Configure<FormOptions>(options =>
-{
-    options.ValueLengthLimit = int.MaxValue;
-    options.MultipartBodyLengthLimit = long.MaxValue;
-    options.MultipartBoundaryLengthLimit = int.MaxValue;
-    options.ValueCountLimit = int.MaxValue;
-    options.BufferBodyLengthLimit = long.MaxValue;
-    options.MultipartHeadersCountLimit = int.MaxValue;
-    options.MultipartHeadersLengthLimit = int.MaxValue;
-});
+builder.Services.AddTransient<IServiceBusRepository, ServiceBusRepository>();
+builder.Services.AddTransient<IBlobStorageRepository, BlobStorageRepository>();
 
 builder.Services.AddMassTransit(configuracoes =>
 {
     configuracoes.UsingAzureServiceBus((contexto, configuracoesServiceBus) =>
     {
-        configuracoesServiceBus.Host("Endpoint=sb://sb-hackathonfiap.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=ebp1GU+MvKL5LC5F63VZgv4qLituxrqkq+ASbKyaSao=");
+        configuracoesServiceBus.Host(builder.Configuration["MassTransitAzure:Conexao"]);
     });
 });
+
 
 var app = builder.Build();
 
@@ -47,7 +34,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapPost("/filme/enviar", async ([FromForm] IFormFile[] videos) =>
+app.MapPost("/filme/enviar", async (IFormFileCollection videos) =>
 {
 
     var service = app.Services.GetService<IProcessarVideoService>();
@@ -62,7 +49,7 @@ app.MapPost("/filme/enviar", async ([FromForm] IFormFile[] videos) =>
 
 app.Run();
 
-static async Task<List<Tuple<string, FileStream>>> ConvertToFileStream(IFormFile[] videos)
+static async Task<List<Tuple<string, FileStream>>> ConvertToFileStream(IFormFileCollection videos)
 {
     var videosStream = new List<Tuple<string, FileStream>>();
 
