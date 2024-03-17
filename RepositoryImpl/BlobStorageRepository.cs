@@ -1,8 +1,7 @@
 ﻿using Azure.Storage.Blobs;
-using Azure.Storage.Blobs.Models;
+using Entities.DTO;
 using Microsoft.Extensions.Configuration;
 using Repository;
-using System.ComponentModel;
 
 namespace RepositoryImpl
 {
@@ -15,19 +14,22 @@ namespace RepositoryImpl
             _configuration = configuration;
         }
 
-        public async Task SendVideoAsync()
+        public async Task SendVideoAsync(EnviarVideoRequest enviarVideoRequest, FileStream arquivo)
         {
-            var connectionString = _configuration.GetConnectionString("");
 
-            //_blobServiceClient.FindBlobsByTags(connectionString);
+            // Criar um cliente BlobServiceClient
+            var connectionString = _configuration.GetConnectionString("AzureBlobStorage");
+            var blobServiceClient = new BlobServiceClient(connectionString);
 
-            var container = new BlobContainerClient(connectionString, "container-teste");
-            var responseContainer = await container.CreateIfNotExistsAsync();
+            // Obter um contêiner de blob
+            var containerClient = blobServiceClient.GetBlobContainerClient("videos");
+            await containerClient.CreateIfNotExistsAsync();
 
-            if (responseContainer?.GetRawResponse().Status == 201)
-                await container.SetAccessPolicyAsync(PublicAccessType.Blob);
+            // Criar um BlobClient para o blob
+            var blobClient = containerClient.GetBlobClient(enviarVideoRequest.NomeVideo);
 
-            container.GetBlobClient("");
+            // Carregar um arquivo para o blob
+            await blobClient.UploadAsync(arquivo);
 
         }
     }
