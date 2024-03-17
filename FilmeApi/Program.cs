@@ -1,4 +1,5 @@
 using MassTransit;
+using Microsoft.Extensions.Azure;
 using Repository;
 using RepositoryImpl;
 using Service;
@@ -14,6 +15,9 @@ builder.Services.AddTransient<IProcessarVideoService, ProcessarVideoService>();
 builder.Services.AddTransient<IServiceBusRepository, ServiceBusRepository>();
 builder.Services.AddTransient<IBlobStorageRepository, BlobStorageRepository>();
 
+//Removendo tamanho máximo de um request.
+builder.WebHost.ConfigureKestrel(options => options.Limits.MaxRequestBodySize = null);
+
 builder.Services.AddMassTransit(configuracoes =>
 {
     configuracoes.UsingAzureServiceBus((contexto, configuracoesServiceBus) =>
@@ -21,7 +25,6 @@ builder.Services.AddMassTransit(configuracoes =>
         configuracoesServiceBus.Host(builder.Configuration["MassTransitAzure:Conexao"]);
     });
 });
-
 
 var app = builder.Build();
 
